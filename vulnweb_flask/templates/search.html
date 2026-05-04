@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+{% if search_term %}
+<h2>Search Results for: {{ search_term | safe }}</h2>
+<p>You searched for: {{ search_term | safe }}</p>
+{% endif %}
+{% endblock %}
