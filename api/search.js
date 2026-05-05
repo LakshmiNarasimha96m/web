@@ -11,7 +11,7 @@ const sampleProducts = [
 ];
 
 // 🔥 YOUR RENDER WAF URL
-const WAF_URL = "https://your-waf.onrender.com/waf";
+const WAF_URL = "https://firewall-1-jajw.onrender.com";
 
 export default async function handler(req, res) {
 
