@@ -1,6 +1,6 @@
-import fetch from 'node-fetch';   // 🔥 ADD THIS
+import fetch from 'node-fetch';
 
-// ❌ REMOVE OLD WAF IMPORT (not needed anymore)
+// REMOVE OLD WAF (not needed)
 // import { inspectInput, sanitizeInput } from '../utils/wafRules.js';
 
 const sampleProducts = [
@@ -10,8 +10,8 @@ const sampleProducts = [
   { title: 'Minimalist art print', description: 'A simple, elegant print that works in every home.' }
 ];
 
-// 🔥 YOUR RENDER WAF URL
-const WAF_URL = "https://firewall-1-jajw.onrender.com";
+// 🔥 PUT YOUR REAL WAF URL HERE
+const WAF_URL = "https://firewall-1-jajw.onrender.com/";
 
 export default async function handler(req, res) {
 
@@ -36,9 +36,9 @@ export default async function handler(req, res) {
 
     const wafResult = await wafRes.json();
 
-    // 🚨 BLOCK if attack
+    // 🚨 BLOCK (IMPORTANT FIX: return 200, NOT 403)
     if (wafResult.status === "block") {
-      return res.status(403).json({
+      return res.status(200).json({
         error: "Blocked by WAF",
         attack: wafResult.attack_type,
         explanation: wafResult.explanation
@@ -46,16 +46,18 @@ export default async function handler(req, res) {
     }
 
   } catch (err) {
-    return res.status(500).json({
+    console.error("WAF ERROR:", err);
+
+    return res.status(200).json({
       error: "WAF connection failed",
       details: err.message
     });
   }
 
   // -----------------------------
-  // ✅ STEP 2: NORMAL SEARCH (UNCHANGED)
+  // ✅ NORMAL SEARCH (UNCHANGED)
   // -----------------------------
-  const safeTerm = searchTerm;  // no need for sanitizeInput now
+  const safeTerm = searchTerm;
 
   const results = sampleProducts.filter((item) => {
     const lower = safeTerm.toLowerCase();
