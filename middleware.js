@@ -23,7 +23,7 @@ export async function middleware(request) {
 
   // 2. Send the data to your Render WAF Brain
   try {
-    const wafResponse = await fetch('https://firewall-1-jajw.onrender.com/api/waf', {
+    const wafResponse = await fetch('https://firewall-1-jajw.onrender.com/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ payload: payloadToCheck })
